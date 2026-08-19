@@ -1,5 +1,6 @@
 <template>
   <input
+    class="user-search-field"
     :value="modelValue"
     type="search"
     placeholder="Search users..."
@@ -20,13 +21,11 @@ const emit = defineEmits(['update:modelValue'])
 </script>
 
 <style scoped>
-input {
-  box-sizing: border-box;
+.user-search-field {
   width: 100%;
   padding: 10px 12px;
   margin-bottom: 20px;
   border: 1px solid #e0e0e0;
   border-radius: 6px;
-  font: inherit;
 }
 </style>

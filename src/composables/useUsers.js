@@ -1,14 +1,27 @@
-import { onMounted, ref } from 'vue'
+import { onBeforeMount, ref } from 'vue'
 import { fetchUsers } from '../api/mock.js'
 
 export function useUsers() {
   const users = ref([])
+  const isLoading = ref(false)
+  const isError = ref(false)
+  const errorMessage = ref('');
 
-  onMounted(() => {
-    fetchUsers().then((data) => {
-      users.value = data
-    })
-  })
+  const loadUsers = async () => {
+    isLoading.value = true
+    errorMessage.value = ''
 
-  return { users }
+    try {
+      users.value = await fetchUsers()
+    } catch (error) {
+      isError.value = true
+      errorMessage.value = error
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  onBeforeMount(loadUsers)
+
+  return { users, isLoading, isError, errorMessage }
 }
