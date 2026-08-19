@@ -2,9 +2,9 @@
   <div class="app">
     <h1>Users</h1>
     <UserSearch v-model="searchQuery" />
-    <UserList v-if="users.length > 0" :users="filteredUsers" />
-    <ErrorState v-if="isError" :message="errorMessage" />
     <Loader v-if="isLoading" />
+    <ErrorState v-else-if="isError" :message="errorMessage" />
+    <UserList v-else :users="filteredUsers" />
   </div>
 </template>
 
@@ -22,7 +22,9 @@ const { users, isError, isLoading, errorMessage } = useUsers()
 const searchField = 'name';
 
 const filteredUsers = computed(() => {
-  return users.value.filter((user) => user[searchField].toLowerCase().includes(searchQuery.value.toLowerCase()))
+  const query = searchQuery.value.trim().toLowerCase()
+
+  return users.value.filter((user) => user[searchField].toLowerCase().includes(query))
 })
 </script>
 
